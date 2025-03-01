@@ -1,8 +1,8 @@
 Quad Double computation package
-Copyright (C) 2003-2018
+Copyright (C) 2003-2023
 ================================================
 
-Revision date:  30 Oct 2018
+Revision date:  3 Nov 2023
 
 Authors:
 Yozo Hida		U.C. Berkeley   		yozo@cs.berkeley.edu
@@ -11,10 +11,6 @@ David H. Bailey  	Lawrence Berkeley Natl Lab  	dhbailey@lbl.gov
 
 C++ usage guide:
 Alex Kaiser 		Lawrence Berkeley Natl Lab 	adkaiser@lbl.gov
-
-This work was supported by the Director, Office of Science, Division of Mathematical, 
-Information, and Computational Sciences of the U.S. Department of Energy under contract 
-number DE-AC02-05CH11231.
 
 This work was supported by the Director, Office of Science, Division of Mathematical, 
 Information, and Computational Sciences of the U.S. Department of Energy under contract 

@@ -191,7 +191,7 @@ istream &operator>>(istream &s, qd_real &qd) {
 ostream &operator<<(ostream &os, const qd_real &qd) {
   bool showpos = (os.flags() & ios_base::showpos) != 0;
   bool uppercase = (os.flags() & ios_base::uppercase) != 0;
-  return os << qd.to_string(os.precision(), os.width(), os.flags(), 
+  return os << qd.to_string(os.precision(), os.width(), os.flags(),
       showpos, uppercase, os.fill());
 }
 
@@ -346,9 +346,9 @@ void qd_real::to_digits(char *s, int &expn, int precision) const {
   }
 
   /* If first digit is 10, shift everything. */
-  if (s[0] > '9') { 
-    e++; 
-    for (i = precision; i >= 2; i--) s[i] = s[i-1]; 
+  if (s[0] > '9') {
+    e++;
+    for (i = precision; i >= 2; i--) s[i] = s[i-1];
     s[0] = '1';
     s[1] = '0';
   }
@@ -519,7 +519,6 @@ string qd_real::to_string(int precision, int width, ios_base::fmtflags fmt,
     	if( fabs( from_string / this->x[0] ) > 3.0 ){
 
     		int point_position;
-    		char temp;
 
     		// loop on the string, find the point, move it up one
     		// don't act on the first character
@@ -736,37 +735,53 @@ qd_real qd_real::accurate_div(const qd_real &a, const qd_real &b) {
   return qd_real(q0, q1, q2, q3);
 }
 
-QD_API qd_real sqrt(const qd_real &a) {
-  /* Strategy:  
+QD_API qd_real fsqrt(const qd_real &a, int &flag) {
+  /* Uses Heron's method, see:
+     https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method
 
-     Perform the following Newton iteration:
-
-       x' = x + (1 - a * x^2) * x / 2;
-       
-     which converges to 1/sqrt(a), starting with the
-     double precision approximation to 1/sqrt(a).
-     Since Newton's iteration more or less doubles the
-     number of correct digits, we only need to perform it 
-     twice.
+     1. x0 = approximate sqrt(a);
+     2. x_{n+1} = (1/2) * (x_n + a / x_n);
+     3. repeat 2 until corrections are small
   */
 
+  int i;
+  double e, eps;
+
+  qd_real r, diff;
+  qd_real half = "0.5000000000000000000000000000000000"
+                 "000000000000000000000000000000000000";
+
   if (a.is_zero())
-    return 0.0;
+    return (qd_real) 0.0;
 
   if (a.is_negative()) {
     qd_real::error("(qd_real::sqrt): Negative argument.");
     return qd_real::_nan;
   }
 
-  qd_real r = (1.0 / std::sqrt(a[0]));
-  qd_real h = mul_pwr2(a, 0.5);
+  eps = std::numeric_limits<qd_real>::epsilon();
 
-  r += ((0.5 - h * sqr(r)) * r);
-  r += ((0.5 - h * sqr(r)) * r);
-  r += ((0.5 - h * sqr(r)) * r);
+  qd_real x = std::sqrt(a[0]);
+  qd_real y;
 
-  r *= a;
-  return r;
+  for (i=0; i < 10; i++) {
+      y = half * (x + a / x);
+      diff = x - y;
+      x = y;
+      e = fabs(((diff[3] + diff[2]) + diff[1]) + diff[0]);
+      if (e < fabs(x.x[0]) * eps) {
+          flag = 0; // convergence achieved
+          return x;
+      }
+  }
+
+  flag = 1; // failed to converge
+  return x;
+}
+
+QD_API qd_real sqrt(const qd_real &a) {
+  int flag;
+  return fsqrt(a, flag);
 }
 
 
