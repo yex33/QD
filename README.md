@@ -1,8 +1,6 @@
 # QD
 A double-double and quad-double package for Fortran and C++
 
-test---
-
 ## End-user documentation
 
 For historical reasons, the original user-focused documentation is
