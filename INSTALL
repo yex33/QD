@@ -10,7 +10,10 @@ Some system specific notes are at the end of this file.
 Build Instructions
 ==================
 
-  1. Run the configure script by typing
+  1. Create the configure script by typing
+        autoconf
+
+  2. Run the configure script by typing
 
         ./configure
 
