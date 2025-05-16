@@ -29,7 +29,6 @@
 #ifndef _QD_DD_REAL_H
 #define _QD_DD_REAL_H
 
-#include <array>
 #include <cmath>
 #include <iostream>
 #include <string>
