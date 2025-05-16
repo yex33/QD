@@ -57,7 +57,7 @@ QD_API dd_real sqrt(const dd_real &a) {
   */
 
   if (a.is_zero())
-    return 0.0;
+    return dd_real(0.0);
 
   if (a.is_negative()) {
     dd_real::error("(dd_real::sqrt): Negative argument.");
@@ -109,11 +109,11 @@ dd_real nroot(const dd_real &a, int n) {
   }
 
   if (a.is_zero())
-    return 0.0;
+    return dd_real(0.0);
 
   /* Note  a^{-1/n} = exp(-log(a)/n) */
   dd_real r = abs(a);
-  dd_real x = std::exp(-std::log(r.x[0]) / n);
+  dd_real x(std::exp(-std::log(r.x[0]) / n));
 
   /* Perform Newton's iteration. */
   x += x * (1.0 - r * npwr(x, n)) / static_cast<double>(n);
@@ -131,11 +131,11 @@ dd_real npwr(const dd_real &a, int n) {
       dd_real::error("(dd_real::npwr): Invalid argument.");
       return dd_real::_nan;
     }
-    return 1.0;
+    return dd_real(1.0);
   }
 
   dd_real r = a;
-  dd_real s = 1.0;
+  dd_real s(1.0);
   int N = std::abs(n);
 
   if (N > 1) {
@@ -201,13 +201,13 @@ dd_real exp(const dd_real &a) {
   const double inv_k = 1.0 / k;
 
   if (a.x[0] <= -709.0)
-    return 0.0;
+    return dd_real(0.0);
 
   if (a.x[0] >=  709.0)
     return dd_real::_inf;
 
   if (a.is_zero())
-    return 1.0;
+    return dd_real(1.0);
 
   if (a.is_one())
     return dd_real::_e;
@@ -264,7 +264,7 @@ dd_real log(const dd_real &a) {
      approximately doubles the number of digits per iteration. */
 
   if (a.is_one()) {
-    return 0.0;
+    return dd_real(0.0);
   }
 
   if (a.x[0] <= 0.0) {
@@ -272,7 +272,7 @@ dd_real log(const dd_real &a) {
     return dd_real::_nan;
   }
 
-  dd_real x = std::log(a.x[0]);   /* Initial approximation */
+  dd_real x(std::log(a.x[0]));   /* Initial approximation */
 
   x = x + a * exp(-x) - 1.0;
   return x;
@@ -307,7 +307,7 @@ static dd_real sin_taylor(const dd_real &a) {
   dd_real r, s, t, x;
 
   if (a.is_zero()) {
-    return 0.0;
+    return dd_real(0.0);
   }
 
   int i = 0;
@@ -329,7 +329,7 @@ static dd_real cos_taylor(const dd_real &a) {
   dd_real r, s, t, x;
 
   if (a.is_zero()) {
-    return 1.0;
+    return dd_real(1.0);
   }
 
   x = -sqr(a);
@@ -373,7 +373,7 @@ dd_real sin(const dd_real &a) {
      increases the convergence of the sine Taylor series. */
 
   if (a.is_zero()) {
-    return 0.0;
+    return dd_real(0.0);
   }
 
   // approximately reduce modulo 2*pi
@@ -449,7 +449,7 @@ dd_real sin(const dd_real &a) {
 dd_real cos(const dd_real &a) {
 
   if (a.is_zero()) {
-    return 1.0;
+    return dd_real(1.0);
   }
 
   // approximately reduce modulo 2*pi
@@ -643,7 +643,7 @@ dd_real atan2(const dd_real &y, const dd_real &x) {
   dd_real yy = y / r;
 
   /* Compute double precision approximation to atan. */
-  dd_real z = std::atan2(to_double(y), to_double(x));
+  dd_real z(std::atan2(to_double(y), to_double(x)));
   dd_real sin_z, cos_z;
 
   if (std::abs(xx.x[0]) > std::abs(yy.x[0])) {
@@ -697,7 +697,7 @@ dd_real acos(const dd_real &a) {
  
 dd_real sinh(const dd_real &a) {
   if (a.is_zero()) {
-    return 0.0;
+    return dd_real(0.0);
   }
 
   if (abs(a) > 0.05) {
@@ -727,7 +727,7 @@ dd_real sinh(const dd_real &a) {
 
 dd_real cosh(const dd_real &a) {
   if (a.is_zero()) {
-    return 1.0;
+    return dd_real(1.0);
   }
 
   dd_real ea = exp(a);
@@ -736,7 +736,7 @@ dd_real cosh(const dd_real &a) {
 
 dd_real tanh(const dd_real &a) {
   if (a.is_zero()) {
-    return 0.0;
+    return dd_real(0.0);
   }
 
   if (std::abs(to_double(a)) > 0.05) {
@@ -793,7 +793,7 @@ QD_API dd_real fmod(const dd_real &a, const dd_real &b) {
 QD_API dd_real ddrand() {
   static const double m_const = 4.6566128730773926e-10;  /* = 2^{-31} */
   double m = m_const;
-  dd_real r = 0.0;
+  dd_real r(0.0);
   double d;
 
   /* Strategy:  Generate 31 bits at a time, using lrand48 
@@ -917,7 +917,7 @@ void dd_real::to_digits(char *s, int &expn, int precision) const {
   }
 
   /* First determine the (approximate) exponent. */
-  e = to_int(std::floor(std::log10(std::abs(x[0]))));
+  e = to_int(dd_real(std::floor(std::log10(std::abs(x[0])))));
 
   if (e < -300) {
     r *= dd_real(10.0) ^ 300;
@@ -1204,7 +1204,7 @@ int dd_real::read(const char *s, dd_real &a) {
   int nd = 0;
   int e = 0;
   bool done = false;
-  dd_real r = 0.0;
+  dd_real r(0.0);
   int nread;
   
   /* Skip any leading spaces */
@@ -1296,7 +1296,7 @@ dd_real dd_real::debug_rand() {
     return ddrand();
 
   int expn = 0;
-  dd_real a = 0.0;
+  dd_real a(0.0);
   double d;
   for (int i = 0; i < 2; i++) {
     d = std::ldexp(static_cast<double>(std::rand()) / RAND_MAX, -expn);
