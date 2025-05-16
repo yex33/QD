@@ -523,3 +523,5 @@ TSWLatexianTemp*
 *.glstex
 
 # End of https://www.toptal.com/developers/gitignore/api/c++,cmake,fortran,intellij+all,autotools+strict,latex
+
+build/
