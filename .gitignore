@@ -235,7 +235,7 @@ fabric.properties
 # these rules might exclude image files for figures etc.
 # *.ps
 # *.eps
-# *.pdf
+*.pdf
 
 ## Generated if empty string is given at "Please type another file name for output:"
 .pdf
@@ -525,3 +525,4 @@ TSWLatexianTemp*
 # End of https://www.toptal.com/developers/gitignore/api/c++,cmake,fortran,intellij+all,autotools+strict,latex
 
 build/
+config/
