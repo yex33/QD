@@ -91,11 +91,11 @@ struct QD_API dd_real {
   static const dd_real _nan;
   static const dd_real _inf;
 
-  static const double _eps;
-  static const double _min_normalized;
+  static constexpr double _eps = 4.93038065763132e-32;  // 2^-104
+  static constexpr double _min_normalized = 2.0041683600089728e-292;  // = 2^(-1022 + 53)
   static const dd_real _max;
   static const dd_real _safe_max;
-  static const int _ndigits;
+  static constexpr int _ndigits = 31;
 
   bool isnan() const { return QD_ISNAN(x[0]) || QD_ISNAN(x[1]); }
   bool isfinite() const { return QD_ISFINITE(x[0]); }
@@ -163,12 +163,12 @@ namespace std {
   template <>
   class numeric_limits<dd_real> : public numeric_limits<double> {
   public:
-    inline static double epsilon() { return dd_real::_eps; }
-    inline static dd_real max() { return dd_real::_max; }
-    inline static dd_real safe_max() { return dd_real::_safe_max; }
-    inline static double min() { return dd_real::_min_normalized; }
-    static const int digits = 104;
-    static const int digits10 = 31;
+    static constexpr double epsilon() { return dd_real::_eps; }
+    static constexpr dd_real max() { return dd_real::_max; }
+    static constexpr dd_real safe_max() { return dd_real::_safe_max; }
+    static constexpr double min() { return dd_real::_min_normalized; }
+    static constexpr int digits = 104;
+    static constexpr int digits10 = 31;
   };
 }
 
