@@ -124,11 +124,13 @@ AC_COMPILE_IFELSE(
 )
 CXXFLAGS="$CXXFLAGS_SAVE $CXX_STD"
 
+AC_MSG_CHECKING([if the compiler has <stdfloat>])
 AC_COMPILE_IFELSE(
   [AC_LANG_PROGRAM([[#include <stdfloat>]],
                    [[std::float32_t x = 1.0f;]])],
-  [AC_DEFINE([QD_HAVE_STDFLOAT], [1], [Define to 1 if <stdfloat> is usable])],
-  [])
+  [AC_MSG_RESULT([yes])
+   AC_DEFINE([QD_HAVE_STDFLOAT], [1], [Define to 1 if <stdfloat> is usable])],
+  [AC_MSG_RESULT([no])])
 
 # Checks for header files.
 AC_CHECK_HEADERS([ieeefp.h])
