@@ -29,8 +29,3 @@ const dd_real dd_real::_log10 = dd_real(2.302585092994045901e+00,
                                         -2.170756223382249351e-16);
 const dd_real dd_real::_nan = dd_real(qd::_d_nan, qd::_d_nan);
 const dd_real dd_real::_inf = dd_real(qd::_d_inf, qd::_d_inf);
-
-const dd_real dd_real::_max =
-    dd_real(1.79769313486231570815e+308, 9.97920154767359795037e+291);
-const dd_real dd_real::_safe_max =
-    dd_real(1.7976931080746007281e+308, 9.97920154767359795037e+291);

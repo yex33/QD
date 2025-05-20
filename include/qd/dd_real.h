@@ -69,9 +69,7 @@ struct QD_API dd_real {
   explicit constexpr dd_real(const int h): x{static_cast<double>(h), 0.0} {}
 
   explicit dd_real (const char *s);
-  explicit dd_real (const double *d) {
-    x[0] = d[0]; x[1] = d[1];
-  }
+  explicit dd_real (const double *d): x{d[0], d[1]} {}
 
   static void error(const char *msg);
 
@@ -91,8 +89,8 @@ struct QD_API dd_real {
 
   static constexpr double _eps = 4.93038065763132e-32;  // 2^-104
   static constexpr double _min_normalized = 2.0041683600089728e-292;  // = 2^(-1022 + 53)
-  static const dd_real _max;
-  static const dd_real _safe_max;
+  static constexpr dd_real _max() { return {1.79769313486231570815e+308, 9.97920154767359795037e+291}; }
+  static constexpr dd_real _safe_max() { return {1.7976931080746007281e+308, 9.97920154767359795037e+291}; };
   static constexpr int _ndigits = 31;
 
   bool isnan() const { return QD_ISNAN(x[0]) || QD_ISNAN(x[1]); }
@@ -162,8 +160,8 @@ namespace std {
   class numeric_limits<dd_real> : public numeric_limits<double> {
   public:
     static constexpr double epsilon() { return dd_real::_eps; }
-    static constexpr dd_real max() { return dd_real::_max; }
-    static constexpr dd_real safe_max() { return dd_real::_safe_max; }
+    static constexpr dd_real max() { return dd_real::_max(); }
+    static constexpr dd_real safe_max() { return dd_real::_safe_max(); }
     static constexpr double min() { return dd_real::_min_normalized; }
     static constexpr int digits = 104;
     static constexpr int digits10 = 31;
