@@ -41,6 +41,11 @@
 #undef QD_HAVE_STD 
 #endif
 
+/* Set the following to 1 to <stdfloat> */
+#ifndef QD_HAVE_STDFLOAT
+#undef QD_HAVE_STDFLOAT
+#endif
+
 /* Set the following to 1 to make the addition and subtraction
    to satisfy the IEEE-style error bound 
 
