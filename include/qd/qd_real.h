@@ -56,11 +56,11 @@ struct QD_API qd_real {
   static const qd_real _nan;
   static const qd_real _inf;
 
-  static const double _eps;
-  static const double _min_normalized;
+  static constexpr double _eps = 1.21543267145725e-63; // = 2^-209
+  static constexpr double _min_normalized = 1.6259745436952323e-260; // = 2^(-1022 + 3*53)
   static const qd_real _max;
   static const qd_real _safe_max;
-  static const int _ndigits;
+  static constexpr int _ndigits = 62;
 
   qd_real();
   qd_real(const char *s);
@@ -140,12 +140,12 @@ namespace std {
   template <>
   class numeric_limits<qd_real> : public numeric_limits<double> {
   public:
-    inline static double epsilon() { return qd_real::_eps; }
-    inline static double min() { return qd_real::_min_normalized; }
-    inline static qd_real max() { return qd_real::_max; }
-    inline static qd_real safe_max() { return qd_real::_safe_max; }
-    static const int digits = 209;
-    static const int digits10 = 62;
+    static constexpr double epsilon() { return qd_real::_eps; }
+    static constexpr double min() { return qd_real::_min_normalized; }
+    static qd_real max() { return qd_real::_max; }
+    static qd_real safe_max() { return qd_real::_safe_max; }
+    static constexpr int digits = 209;
+    static constexpr int digits10 = 62;
   };
 }
 
