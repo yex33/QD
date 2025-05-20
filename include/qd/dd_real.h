@@ -36,6 +36,10 @@
 #include <qd/qd_config.h>
 #include <qd/fpu.h>
 
+#ifdef QD_HAVE_STDFLOAT
+#include <stdfloat>
+#endif
+
 // Some compilers define isnan, isfinite, and isinf as macros, even for
 // C++ codes, which cause havoc when overloading these functions.  We undef
 // them here.
@@ -148,6 +152,11 @@ struct QD_API dd_real {
   explicit operator double() const;
   explicit operator float() const;
   explicit operator int() const;
+#ifdef QD_HAVE_STDFLOAT
+  explicit operator std::float32_t() const;
+  explicit operator std::float64_t() const;
+#endif
+
 
   /* Debugging Methods */
   void dump(const std::string &name = "", std::ostream &os = std::cerr) const;

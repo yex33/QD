@@ -17,6 +17,9 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#ifdef QD_HAVE_STDFLOAT
+#include <stdfloat>
+#endif
 
 #include "config.h"
 #include <qd/dd_real.h>
@@ -1273,6 +1276,16 @@ dd_real::operator float() const {
 dd_real::operator int() const {
   return to_int(*this);
 }
+
+#ifdef QD_HAVE_STDFLOAT
+dd_real::operator std::float32_t() const {
+  return static_cast<std::float32_t>(to_double(*this));
+}
+
+dd_real::operator std::float64_t() const {
+  return static_cast<std::float64_t>(to_double(*this));
+}
+#endif
 
 /* Debugging routines */
 void dd_real::dump(const string &name, std::ostream &os) const {

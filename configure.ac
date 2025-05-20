@@ -111,6 +111,24 @@ else
 fi
 
 # Checks for libraries.
+AC_MSG_CHECKING([whether the compiler supports C++23])
+CXXFLAGS_SAVE="$CXXFLAGS"
+CXXFLAGS="$CXXFLAGS -std=c++23"
+
+AC_COMPILE_IFELSE(
+  [AC_LANG_PROGRAM([[#include <stacktrace>]], [[std::stacktrace::current();]])],
+  [AC_MSG_RESULT([yes])
+   CXX_STD="-std=c++23"],
+  [AC_MSG_RESULT([no])
+   AC_MSG_ERROR([Your compiler does not support C++23])]
+)
+CXXFLAGS="$CXXFLAGS_SAVE $CXX_STD"
+
+AC_COMPILE_IFELSE(
+  [AC_LANG_PROGRAM([[#include <stdfloat>]],
+                   [[std::float32_t x = 1.0f;]])],
+  [AC_DEFINE([QD_HAVE_STDFLOAT], [1], [Define to 1 if <stdfloat> is usable])],
+  [])
 
 # Checks for header files.
 AC_CHECK_HEADERS([ieeefp.h])
