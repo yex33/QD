@@ -1262,6 +1262,18 @@ int dd_real::read(const char *s, dd_real &a) {
   return 0;
 }
 
+dd_real::operator double() const {
+  return to_double(*this);
+}
+
+dd_real::operator float() const {
+  return static_cast<float>(to_double(*this));
+}
+
+dd_real::operator int() const {
+  return to_int(*this);
+}
+
 /* Debugging routines */
 void dd_real::dump(const string &name, std::ostream &os) const {
   std::ios_base::fmtflags old_flags = os.flags();

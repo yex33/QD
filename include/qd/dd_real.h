@@ -145,6 +145,10 @@ struct QD_API dd_real {
       bool showpos = false, bool uppercase = false, char fill = ' ') const;
   int read(const char *s, dd_real &a);
 
+  explicit operator double() const;
+  explicit operator float() const;
+  explicit operator int() const;
+
   /* Debugging Methods */
   void dump(const std::string &name = "", std::ostream &os = std::cerr) const;
   void dump_bits(const std::string &name = "",
