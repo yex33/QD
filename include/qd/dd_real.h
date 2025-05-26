@@ -156,17 +156,15 @@ struct QD_API dd_real {
 };
 
 
-namespace std {
-  template <>
-  struct numeric_limits<dd_real> : numeric_limits<double> {
-    static constexpr double epsilon() { return dd_real::_eps; }
-    static constexpr dd_real max() { return dd_real::_max(); }
-    static constexpr dd_real safe_max() { return dd_real::_safe_max(); }
-    static constexpr double min() { return dd_real::_min_normalized; }
-    static constexpr int digits = 104;
-    static constexpr int digits10 = 31;
-  };
-}
+template <>
+struct std::numeric_limits<dd_real> : numeric_limits<double> {
+  static constexpr double epsilon() { return dd_real::_eps; }
+  static constexpr dd_real max() { return dd_real::_max(); }
+  static constexpr dd_real safe_max() { return dd_real::_safe_max(); }
+  static constexpr double min() { return dd_real::_min_normalized; }
+  static constexpr int digits = 104;
+  static constexpr int digits10 = 31;
+};
 
 QD_API dd_real ddrand();
 QD_API dd_real sqrt(const dd_real &a);
