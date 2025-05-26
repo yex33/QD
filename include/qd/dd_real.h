@@ -65,7 +65,8 @@ struct QD_API dd_real {
 
   constexpr dd_real() = default;
   constexpr dd_real(const double hi, const double lo): x{hi, lo} {}
-  explicit constexpr dd_real(const double h): x{h, 0.0} {}
+  // Allow implicit conversion from double
+  constexpr dd_real(const double h): x{h, 0.0} {}
   explicit constexpr dd_real(const int h): x{static_cast<double>(h), 0.0} {}
 
   explicit dd_real (const char *s);
@@ -93,9 +94,9 @@ struct QD_API dd_real {
   static constexpr dd_real _safe_max() { return {1.7976931080746007281e+308, 9.97920154767359795037e+291}; };
   static constexpr int _ndigits = 31;
 
-  bool isnan() const { return QD_ISNAN(x[0]) || QD_ISNAN(x[1]); }
-  bool isfinite() const { return QD_ISFINITE(x[0]); }
-  bool isinf() const { return QD_ISINF(x[0]); }
+  [[nodiscard]] bool isnan() const { return QD_ISNAN(x[0]) || QD_ISNAN(x[1]); }
+  [[nodiscard]] bool isfinite() const { return QD_ISFINITE(x[0]); }
+  [[nodiscard]] bool isinf() const { return QD_ISINF(x[0]); }
 
   static dd_real add(double a, double b);
   static dd_real ieee_add(const dd_real &a, const dd_real &b);
@@ -131,17 +132,17 @@ struct QD_API dd_real {
 
   static dd_real sqrt(double a);
 
-  bool is_zero() const;
-  bool is_one() const;
-  bool is_positive() const;
-  bool is_negative() const;
+  [[nodiscard]] bool is_zero() const;
+  [[nodiscard]] bool is_one() const;
+  [[nodiscard]] bool is_positive() const;
+  [[nodiscard]] bool is_negative() const;
 
-  static dd_real rand(void);
+  static dd_real rand();
 
   void to_digits(char *s, int &expn, int precision = _ndigits) const;
   void write(char *s, int len, int precision = _ndigits,
       bool showpos = false, bool uppercase = false) const;
-  std::string to_string(int precision = _ndigits, int width = 0,
+  [[nodiscard]] std::string to_string(int precision = _ndigits, int width = 0,
       std::ios_base::fmtflags fmt = static_cast<std::ios_base::fmtflags>(0),
       bool showpos = false, bool uppercase = false, char fill = ' ') const;
   int read(const char *s, dd_real &a);
@@ -157,8 +158,7 @@ struct QD_API dd_real {
 
 namespace std {
   template <>
-  class numeric_limits<dd_real> : public numeric_limits<double> {
-  public:
+  struct numeric_limits<dd_real> : numeric_limits<double> {
     static constexpr double epsilon() { return dd_real::_eps; }
     static constexpr dd_real max() { return dd_real::_max(); }
     static constexpr dd_real safe_max() { return dd_real::_safe_max(); }
@@ -168,7 +168,7 @@ namespace std {
   };
 }
 
-QD_API dd_real ddrand(void);
+QD_API dd_real ddrand();
 QD_API dd_real sqrt(const dd_real &a);
 
 QD_API dd_real polyeval(const dd_real *c, int n, const dd_real &x);
@@ -241,7 +241,7 @@ QD_API dd_real floor(const dd_real &a);
 QD_API dd_real ceil(const dd_real &a);
 QD_API dd_real aint(const dd_real &a);
 
-QD_API dd_real ddrand(void);
+QD_API dd_real ddrand();
 
 double to_double(const dd_real &a);
 int    to_int(const dd_real &a);
