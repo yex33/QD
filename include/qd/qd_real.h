@@ -29,6 +29,10 @@
 #include <qd/qd_config.h>
 #include <qd/dd_real.h>
 
+#ifdef QD_HAVE_STDFLOAT
+#include <stdfloat>
+#endif
+
 struct QD_API qd_real {
   double x[4];    /* The Components. */
 
@@ -126,6 +130,15 @@ struct QD_API qd_real {
       std::ios_base::fmtflags fmt = static_cast<std::ios_base::fmtflags>(0),
       bool showpos = false, bool uppercase = false, char fill = ' ') const;
   static int read(const char *s, qd_real &a);
+
+  explicit operator double() const;
+  explicit operator float() const;
+  explicit operator int() const;
+  explicit operator dd_real() const;
+#ifdef QD_HAVE_STDFLOAT
+  explicit operator std::float32_t() const;
+  explicit operator std::float64_t() const;
+#endif
 
   /* Debugging methods */
   void dump(const std::string &name = "", std::ostream &os = std::cerr) const;
