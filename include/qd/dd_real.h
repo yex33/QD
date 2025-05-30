@@ -79,8 +79,8 @@ struct QD_API dd_real {
   explicit constexpr dd_real(const std::float64_t h): x{static_cast<double>(h), 0.0} {}
 #endif
 
-  explicit dd_real (const char *s);
-  explicit dd_real (const double *d): x{d[0], d[1]} {}
+  explicit dd_real(const char *s);
+  explicit dd_real(const double *d): x{d[0], d[1]} {}
 
   static void error(const char *msg);
 
