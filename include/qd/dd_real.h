@@ -68,8 +68,15 @@ struct QD_API dd_real {
 
   constexpr dd_real() = default;
   constexpr dd_real(const double hi, const double lo): x{hi, lo} {}
-  explicit constexpr dd_real(const double h): x{h, 0.0} {}
+  // Allow implicit conversion from double
+  constexpr dd_real(const double h): x{h, 0.0} {}
+  explicit constexpr dd_real(const float h): x{static_cast<double>(h), 0.0} {}
   explicit constexpr dd_real(const int h): x{static_cast<double>(h), 0.0} {}
+#ifdef QD_HAVE_STDFLOAT
+  explicit constexpr dd_real(const std::float16_t h): x{static_cast<double>(h), 0.0} {}
+  explicit constexpr dd_real(const std::float32_t h): x{static_cast<double>(h), 0.0} {}
+  explicit constexpr dd_real(const std::float64_t h): x{static_cast<double>(h), 0.0} {}
+#endif
 
   explicit dd_real (const char *s);
   explicit dd_real (const double *d): x{d[0], d[1]} {}
@@ -153,6 +160,7 @@ struct QD_API dd_real {
   explicit operator float() const;
   explicit operator int() const;
 #ifdef QD_HAVE_STDFLOAT
+  explicit operator std::float16_t() const;
   explicit operator std::float32_t() const;
   explicit operator std::float64_t() const;
 #endif

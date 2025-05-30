@@ -1278,6 +1278,10 @@ dd_real::operator int() const {
 }
 
 #ifdef QD_HAVE_STDFLOAT
+dd_real::operator std::float16_t() const {
+  return static_cast<std::float16_t>(to_double(*this));
+}
+
 dd_real::operator std::float32_t() const {
   return static_cast<std::float32_t>(to_double(*this));
 }
