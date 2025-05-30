@@ -21,13 +21,6 @@
 #endif
 
 /********** Constructors **********/
-inline qd_real::qd_real(double x0, double x1, double x2, double x3) {
-  x[0] = x0;
-  x[1] = x1;
-  x[2] = x2;
-  x[3] = x3;
-}
-
 inline qd_real::qd_real(const double *xx) {
   x[0] = xx[0];
   x[1] = xx[1];
@@ -35,27 +28,10 @@ inline qd_real::qd_real(const double *xx) {
   x[3] = xx[3];
 }
 
-inline qd_real::qd_real(double x0) {
-  x[0] = x0;
-  x[1] = x[2] = x[3] = 0.0;
-}
-
-inline qd_real::qd_real() {
-	x[0] = 0.0; 
-	x[1] = 0.0; 
-	x[2] = 0.0; 
-	x[3] = 0.0; 
-}
-
-inline qd_real::qd_real(const dd_real &a) {
-  x[0] = a._hi();
-  x[1] = a._lo();
+inline qd_real::qd_real(const dd_real &dd) {
+  x[0] = dd._hi();
+  x[1] = dd._lo();
   x[2] = x[3] = 0.0;
-}
-
-inline qd_real::qd_real(int i) {
-  x[0] = static_cast<double>(i);
-  x[1] = x[2] = x[3] = 0.0;
 }
 
 /********** Accessors **********/

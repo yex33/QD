@@ -284,6 +284,11 @@ qd_real::operator dd_real() const {
   return to_dd_real(*this);
 }
 
+#ifdef QD_HAVE_STDFLOAT
+qd_real::operator std::float16_t() const {
+  return static_cast<std::float16_t>(to_double(*this));
+}
+
 qd_real::operator std::float32_t() const {
   return static_cast<std::float32_t>(to_double(*this));
 }
@@ -291,6 +296,7 @@ qd_real::operator std::float32_t() const {
 qd_real::operator std::float64_t() const {
   return static_cast<std::float64_t>(to_double(*this));
 }
+#endif
 
 void qd_real::to_digits(char *s, int &expn, int precision) const {
   int D = precision + 1;  /* number of digits to compute */
@@ -773,8 +779,8 @@ QD_API qd_real fsqrt(const qd_real &a, int &flag) {
   double e, eps;
 
   qd_real r, diff;
-  qd_real half = "0.5000000000000000000000000000000000"
-                 "000000000000000000000000000000000000";
+  qd_real half("0.5000000000000000000000000000000000"
+                 "000000000000000000000000000000000000");
 
   if (a.is_zero())
     return (qd_real) 0.0;
